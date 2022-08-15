@@ -1,0 +1,350 @@
+definitions:
+  models.Album:
+    properties:
+      artist:
+        type: string
+      id:
+        type: string
+      price:
+        type: number
+      title:
+        type: string
+    type: object
+  models.Url:
+    properties:
+      clicks:
+        type: integer
+      id:
+        type: string
+      is_active:
+        type: boolean
+      target_url:
+        type: string
+      url:
+        type: string
+    type: object
+  schemas.Album:
+    properties:
+      artist:
+        type: string
+      price:
+        type: number
+      title:
+        type: string
+    type: object
+  schemas.Url:
+    properties:
+      clicks:
+        type: integer
+      is_active:
+        type: boolean
+      target_url:
+        type: string
+      url:
+        type: string
+    required:
+    - target_url
+    type: object
+info:
+  contact: {}
+  description: This is a sample API for using Fiber
+  version: "1.0"
+paths:
+  /v1/:
+    get:
+      consumes:
+      - application/json
+      description: Say hello to the world
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Say hello
+      tags:
+      - Hello
+  /v1/albums:
+    get:
+      consumes:
+      - application/json
+      description: Get all albums from the store
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/models.Album'
+              type: array
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Show all albums
+      tags:
+      - Albums
+    post:
+      consumes:
+      - application/json
+      description: Create an album in the store
+      parameters:
+      - description: Album object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.Album'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Album'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create an album
+      tags:
+      - Albums
+  /v1/albums/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an album from the store
+      parameters:
+      - description: Album ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete an album
+      tags:
+      - Albums
+    get:
+      consumes:
+      - application/json
+      description: Get an album by ID
+      parameters:
+      - description: Album ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Album'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Get an album by ID
+      tags:
+      - Albums
+    patch:
+      consumes:
+      - application/json
+      description: Update an album in the store
+      parameters:
+      - description: Album ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Album object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.Album'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Album'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Update an album
+      tags:
+      - Albums
+  /v1/urls:
+    get:
+      consumes:
+      - application/json
+      description: Get all urls from the store
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/models.Url'
+              type: array
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Show all urls
+      tags:
+      - Urls
+    post:
+      consumes:
+      - application/json
+      description: Create a new url
+      parameters:
+      - description: Url
+        in: body
+        name: url
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.Url'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Url'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create a new url
+      tags:
+      - Urls
+  /v1/urls/{url_key}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an url from the store
+      parameters:
+      - description: Url key
+        in: path
+        name: url_key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete an url
+      tags:
+      - Urls
+    get:
+      consumes:
+      - application/json
+      description: Get an url by key
+      parameters:
+      - description: Url key
+        in: path
+        name: url_key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Url'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Get an url by key
+      tags:
+      - Urls
+    patch:
+      consumes:
+      - application/json
+      description: Update an url in the store
+      parameters:
+      - description: Url key
+        in: path
+        name: url_key
+        required: true
+        type: string
+      - description: Url
+        in: body
+        name: url
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.Url'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Url'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update an url
+      tags:
+      - Urls
+swagger: "2.0"
